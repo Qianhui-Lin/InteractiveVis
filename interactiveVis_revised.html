@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herpes Zoster Vaccine Benefit and Risk Visualization</title>
+    <style>
+       .header {
+            background-color: #1E73BE;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .subheader {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Only center horizontally */
+            height: 100%;
+            width: 100%;
+        }
+        .icon-array {
+            display: grid;
+            grid-template-columns: repeat(40,5px);
+            gap: 1px;
+            margin: 10px;
+            align-items: center;
+            padding-left: 20px;
+        }
+        .dot {
+            width: 5px;
+            height: 5px;
+            margin: 1px;
+            background-color: lightgray;
+            border-radius: 50%;
+        }
+        .red { background-color: #b02418; }
+        .blue { background-color: #4e13e6; }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 5px;
+            flex-wrap: wrap;
+        }
+        .group {
+            text-align: center;
+            justify-content: center;
+            min-width: 300px;
+        }
+        .question {
+            text-align: left;
+            width: 300px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .button-container .centered-button {
+            flex: 1 ; 
+            
+            padding: 10px 10px;
+            margin-top: 20px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            border-radius: 5px;
+            
+        }
+        #stimulate,#stimulate-10 {
+            background-color: #4CAF50;
+        }
+        #reset {
+            background-color: #1E73BE;
+        }
+
+        #stimulate:hover,#stimulate-10:hover, #stimulate-10:disabled{
+            background-color:#7fd483;
+        }
+
+
+        #reset:hover{
+            background-color:#64a6e0;
+        }
+        #effectiveness {
+            text-align: center;
+            color: #b02418;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #safety {
+            text-align: center;
+            color: #4e13e6;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #stats {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #avg-vaccinated-herpes,#avg-placebo-herpes,#avg-nnt{
+            color: #b02418;
+            font-weight: bold;
+        }
+        #avg-vaccinated-adverse,#avg-placebo-adverse{
+            color:#4e13e6;
+            font-weight: bold;
+        }
+        #stimulations{
+            font-weight: bold;
+        }
+        .cases {
+            font-size: 14px;
+        }
+        .cases .number {
+            font-weight: bold;
+        }
+        .cases .effectiveness {
+            color: #b02418;
+        }
+        .cases .safety {
+            color: #4e13e6;
+        }
+        .cases .label {
+            color: black;
+        }
+        .highlight {
+            color: #1E73BE;
+        }
+        .vs-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 0px;
+        }
+        .vs-icon img {
+            max-width: 50px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<h1 id="header">How Effective and Safe is the Herpes Zoster Vaccine ?</h1>
+<h2 id="subheader">For 1000 people ≥ 60 years old over an average period of 3.1 years</h2>
+<div class="wrapper">
+<div class="container">
+    <div id="effectiveness">
+        <p>1. Effectiveness</p>
+    </div>
+    <div class="row">
+        <div class="group">
+            <div class="question">How many people in the <span class="highlight">placebo</span> group will get herpes zoster?</div>
+            <div class="icon-array" id="placebo-herpes"></div>
+            <div class="cases">
+                <span class="number effectiveness" id="placebo-herpes-cases">0</span> <span class="label">cases</span>
+            </div>
+        </div>
+        <div class="vs-icon">
+            <img src="vs-1.png" alt="VS" width="50" height="50">
+        </div>
+        <div class="group">
+            <div class="question">How many <span class="highlight">vaccinated</span> people will get herpes zoster?</div>
+            <div class="icon-array" id="vaccinated-herpes"></div>
+            <div class="cases">
+                <span class="number effectiveness" id="vaccinated-herpes-cases">0</span> <span class="label">cases</span>
+            </div>
+        </div>
+        
+    </div>
+    <div id="safety">
+        <p>2. Safety</p>
+    </div>
+    <div class="row">
+        
+        <div class="group">
+            <div class="question">How many people in the <span class="highlight">placebo</span> group will have a serious adverse effect?</div>
+            <div class="icon-array" id="placebo-adverse"></div>
+            <div class="cases">
+                <span class="number safety" id="placebo-adverse-cases">0</span> <span class="label">cases</span>
+            </div>
+        </div>
+        <div class="vs-icon">
+            <img src="vs-2.png" alt="VS">
+        </div>
+        <div class="group">
+            <div class="question">How many <span class="highlight">vaccinated</span> people will have a serious adverse effect?</div>
+            <div class="icon-array" id="vaccinated-adverse"></div>
+            <div class="cases">
+                <span class="number safety" id="vaccinated-adverse-cases">0</span> <span class="label">cases</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button class="centered-button" id="stimulate">Simulate once</button>
+        <button class="centered-button" id="stimulate-10">Simulate 10 times</button>
+        <button class="centered-button" id="reset">Reset</button>
+    </div>
+
+</div>
+</div>
+
+
+<div id="stats">
+    <p>Simulation times: <span id="stimulations">0</span> (Current View: Simulation <span id="stimulations_current">0</span>)</p>
+    <p>Average number of herpes zoster cases in the placebo group: <span id="avg-placebo-herpes">0</span></p>
+    <p>Average number of herpes zoster cases in the vaccine group: <span id="avg-vaccinated-herpes">0</span></p>
+    <p>For every 1000 people, vaccination reduced an average of <span id="avg-nnt">0</span> herpes zoster cases compared to the placebo group.</p>
+    <p>Average number of serious adverse effect cases in the placebo group: <span id="avg-placebo-adverse">0</span></p>
+    <p>Average number of serious adverse effect cases in the vaccine group: <span id="avg-vaccinated-adverse">0</span></p>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
